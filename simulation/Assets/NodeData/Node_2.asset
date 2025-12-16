@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761f37eba5fa5bb4baa0c4af153e756f, type: 3}
+  m_Name: Node_2
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
+  nodeId: 
+  speakerName: 
+  dialogueText: "\uAC1C\uBC1C\uC2DC\uC791"
+  nextNode: {fileID: 11400000, guid: 4d8eca1dc8d988d489738a00209226db, type: 2}
