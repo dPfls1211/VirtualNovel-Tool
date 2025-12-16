@@ -1,21 +1,33 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-// 파일 생성 메뉴에 추가
+// 선택지 하나하나의 정보를 담는 클래스
+[System.Serializable]
+public class ChoiceOption
+{
+    public string text;           // 선택지 텍스트 (예: "도와준다")
+    public DialogueNode targetNode; // 선택했을 때 이동할 노드
+}
+
 [CreateAssetMenu(fileName = "NewNode", menuName = "VN System/Dialogue Node")]
 public class DialogueNode : ScriptableObject
 {
     [Header("Node Info")]
-    public string nodeId; // 나중에 Firebase 저장용 고유 ID (예: "node_001")
+    public string nodeId;
 
     [Header("Dialogue Content")]
-    public string speakerName; // 화자 이름
+    public string speakerName;
     [TextArea(3, 5)]
-    public string dialogueText; // 대사 내용
+    public string dialogueText;
 
-    [Header("Connections")]
-    // 다음으로 이어질 노드. 
-    // 나중에는 이 직접 참조 대신 'ID'를 통해 연결하는 방식으로 고도화할 예정입니다.
+    [Header("Branching")]
+    // 선택지가 있으면 이 리스트를 사용
+    // 데이터 기반(Data-Driven) 구조로 짜면, 기획자가 코드 수정 없이 에디터에서 선택지를 4개, 5개로 늘려도 로직은 완벽하게 작동함
+    public List<ChoiceOption> choices = new List<ChoiceOption>();
+
+    // 선택지가 없을 때(선형 진행) 사용할 기본 다음 노드
     public DialogueNode nextNode;
 
-    // 이번 테스트에서는 선택지 없이 '선형 대화'부터 확인합니다.
+    // 헬퍼 프로퍼티: 선택지가 있는지 여부 확인
+    public bool HasChoices => choices != null && choices.Count > 0;
 }

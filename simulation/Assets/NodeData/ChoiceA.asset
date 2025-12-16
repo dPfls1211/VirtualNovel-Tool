@@ -10,14 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 761f37eba5fa5bb4baa0c4af153e756f, type: 3}
-  m_Name: Node_2
+  m_Name: ChoiceA
   m_EditorClassIdentifier: Assembly-CSharp::DialogueNode
   nodeId: 
   speakerName: 
-  dialogueText: "\uAC1C\uBC1C\uC2DC\uC791"
-  choices:
-  - text: "\uC88B\uC544"
-    targetNode: {fileID: 11400000, guid: 1c7328c47de7e4544ac3e729554fad16, type: 2}
-  - text: "\uC2EB\uC5B4"
-    targetNode: {fileID: 11400000, guid: 3c26bf2586c12714aa82702e3d7b6bbe, type: 2}
-  nextNode: {fileID: 0}
+  dialogueText: "\uC88B\uC544"
+  choices: []
+  nextNode: {fileID: 11400000, guid: ca7202ba67d1442408d70015c4fa4a6d, type: 2}

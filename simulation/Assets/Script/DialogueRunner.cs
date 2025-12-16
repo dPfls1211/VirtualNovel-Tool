@@ -2,60 +2,96 @@ using UnityEngine;
 
 public class DialogueRunner : MonoBehaviour
 {
-    [Header("Start Node")]
-    [SerializeField] private DialogueNode startNode; // 인스펙터에서 첫 대사를 넣어줄 곳
+    [SerializeField] private DialogueNode startNode;
 
     private DialogueNode _currentNode;
     private bool _isDialogueActive = false;
+    private bool _isWaitingForChoice = false; // 선택지 입력 대기 상태 플래그
 
     private void Start()
     {
-        // 게임 시작 시 바로 대화 시작
-        if (startNode != null)
-        {
-            StartDialogue(startNode);
-        }
-        else
-        {
-            Debug.LogWarning("시작 노드가 설정되지 않았습니다!");
-        }
+        if (startNode != null) StartDialogue(startNode);
     }
 
     private void Update()
     {
-        // 대화 중일 때 스페이스바를 누르면 다음 대사로 진행
-        if (_isDialogueActive && Input.GetKeyDown(KeyCode.Space))
+        if (!_isDialogueActive) return;
+
+        // 1. 선택지 대기 상태일 때
+        if (_isWaitingForChoice)
         {
-            ProceedToNext();
+            HandleChoiceInput();
+        }
+        // 2. 일반 대화 상태일 때 (스페이스바로 다음)
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ProceedToNext();
+            }
         }
     }
 
-    // 대화 시스템 시작
+    // 숫자 키 입력 처리 (1~9번)
+    private void HandleChoiceInput()
+    {
+        // 1번부터 선택지 개수만큼 키 입력 체크
+        for (int i = 0; i < _currentNode.choices.Count; i++)
+        {
+            // Alpha1은 숫자 1키, Alpha2는 숫자 2키...
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                // 선택한 노드로 이동
+                DialogueNode selectedNode = _currentNode.choices[i].targetNode;
+                _isWaitingForChoice = false; // 대기 상태 해제
+
+                // 선택 결과 로그
+                Debug.Log($"---> [{i + 1}번 선택함]: 다음 대사로 이동");
+
+                StartDialogue(selectedNode);
+                return;
+            }
+        }
+    }
+
     public void StartDialogue(DialogueNode node)
     {
         _currentNode = node;
         _isDialogueActive = true;
-        DisplayNode(_currentNode);
+        DisplayNode(node);
     }
 
-    // 현재 노드의 내용을 출력 (나중에 UI 연결할 부분)
     private void DisplayNode(DialogueNode node)
     {
         Debug.Log($"-----------------------------------------");
         Debug.Log($"[화자]: {node.speakerName}");
         Debug.Log($"[내용]: {node.dialogueText}");
+
+        // 선택지가 있는지 확인
+        if (node.HasChoices)
+        {
+            _isWaitingForChoice = true; // 유저 입력 대기 모드 진입
+            Debug.Log("[선택지 발생!] 숫자 키를 눌러 선택하세요:");
+
+            for (int i = 0; i < node.choices.Count; i++)
+            {
+                Debug.Log($"   ({i + 1}) {node.choices[i].text}");
+            }
+        }
+        else
+        {
+            _isWaitingForChoice = false;
+            Debug.Log(">> 스페이스바를 눌러 계속하기...");
+        }
         Debug.Log($"-----------------------------------------");
-        Debug.Log(">> 스페이스바를 눌러 계속하기...");
     }
 
-    // 다음 노드로 넘어가기
     private void ProceedToNext()
     {
-        // 다음 노드가 있는지 확인
+        // 선택지가 없는 노드라면 nextNode로 이동
         if (_currentNode.nextNode != null)
         {
-            _currentNode = _currentNode.nextNode;
-            DisplayNode(_currentNode);
+            StartDialogue(_currentNode.nextNode);
         }
         else
         {
@@ -63,7 +99,6 @@ public class DialogueRunner : MonoBehaviour
         }
     }
 
-    // 대화 종료 처리
     private void EndDialogue()
     {
         _isDialogueActive = false;
