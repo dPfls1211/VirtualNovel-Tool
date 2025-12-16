@@ -1,0 +1,19 @@
+# Ignore everything in the project
+/simulation/*
+
+# But do not ignore the Assets folder and its Scripts folder
+!/simulation/Assets/
+!/simulation/Assets/Scripts/
+!/simulation/Assets/Scripts/**/*.cs
+
+# Ignore meta files except in the Scripts folder
+/simulation/Assets/**/*.meta
+!/simulation/Assets/Scripts/**/*.meta
+
+# Ignore generated project files and other build artifacts
+/simulation/Library/
+/simulation/Temp/
+/simulation/Obj/
+/simulation/Build/
+/simulation/Builds/
+/simulation/Logs/
