@@ -3,6 +3,8 @@
 
 # But do not ignore the Assets folder and its Scripts folder
 !/simulation/Assets/
+!/simulation/Packages/
+!/simulation/ProjectSettings/
 !/simulation/Assets/Scripts/
 !/simulation/Assets/Scripts/**/*.cs
 
